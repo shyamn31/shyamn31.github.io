@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shyam Natarajan | Cybersecurity Specialist</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00ff00;
+            --secondary: #00ffff;
+            --danger: #ff0040;
+            --bg: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --text: #e0e0e0;
+            --terminal-bg: rgba(0, 20, 0, 0.9);
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Matrix Rain Background */
+        #matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        /* Glitch Effect */
+        @keyframes glitch {
+            0%, 100% { text-shadow: -2px 0 var(--danger), 2px 0 var(--secondary); }
+            25% { text-shadow: 2px 0 var(--danger), -2px 0 var(--secondary); }
+            50% { text-shadow: -2px 0 var(--secondary), 2px 0 var(--danger); }
+            75% { text-shadow: 2px 0 var(--secondary), -2px 0 var(--danger); }
+        }
+
+        .glitch {
+            animation: glitch 0.5s infinite;
+        }
+
+        /* Terminal Cursor */
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .cursor::after {
+            content: '_';
+            animation: blink 1s infinite;
+            color: var(--primary);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--primary);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--secondary);
+            text-shadow: 0 0 10px var(--secondary);
+        }
+
+        nav a::before {
+            content: '> ';
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        nav a:hover::before {
+            opacity: 1;
+        }
+
+        /* Hero Section */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 2rem;
+        }
+
+        .terminal-window {
+            background: var(--terminal-bg);
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 0 50px rgba(0, 255, 0, 0.3);
+        }
+
+        .terminal-header {
+            background: var(--primary);
+            color: var(--bg);
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--bg);
+        }
+
+        .terminal-content {
+            padding: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .typing-text {
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid var(--primary);
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--primary) }
+        }
+
+        /* Section Styling */
+        section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::before {
+            content: '// ';
+            color: var(--secondary);
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            animation: scan 2s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        /* Card Styling */
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--primary);
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 255, 0, 0.3);
+            border-color: var(--secondary);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        /* Skills */
+        .skill-tag {
+            display: inline-block;
+            background: var(--terminal-bg);
+            border: 1px solid var(--primary);
+            padding: 0.3rem 0.8rem;
+            margin: 0.2rem;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .skill-tag:hover {
+            background: var(--primary);
+            color: var(--bg);
+            transform: scale(1.1);
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--primary);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 2rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        /* Contact */
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--secondary);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .contact-item:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        /* GitHub Links */
+        .github-link {
+            display: inline-block;
+            margin-top: 1rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            border: 1px solid var(--primary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+        }
+
+        .github-link:hover {
+            background: var(--primary);
+            color: var(--bg);
+            box-shadow: 0 0 15px var(--primary);
+            transform: scale(1.05);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .terminal-content {
+                padding: 1rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--primary);
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ASCII Art */
+        .ascii-art {
+            color: var(--primary);
+            font-size: 0.8rem;
+            line-height: 1;
+            white-space: pre;
+            margin: 2rem 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrix-bg"></canvas>
+
+    <nav>
+        <ul>
+            <li><a href="#home">HOME</a></li>
+            <li><a href="#about">ABOUT</a></li>
+            <li><a href="#education">EDUCATION</a></li>
+            <li><a href="#projects">PROJECTS</a></li>
+            <li><a href="#skills">SKILLS</a></li>
+            <li><a href="#contact">CONTACT</a></li>
+        </ul>
+    </nav>
+
+    <section id="hero">
+        <div class="terminal-window">
+            <div class="terminal-header">
+                <div class="terminal-button"></div>
+                <div class="terminal-button"></div>
+                <div class="terminal-button"></div>
+                <span>shyam@cybersec:~$</span>
+            </div>
+            <div class="terminal-content">
+                <div class="ascii-art">
+ ██████╗██╗   ██╗██████╗ ███████╗██████╗ ███████╗███████╗ ██████╗
+██╔════╝╚██╗ ██╔╝██╔══██╗██╔════╝██╔══██╗██╔════╝██╔════╝██╔════╝
+██║      ╚████╔╝ ██████╔╝█████╗  ██████╔╝███████╗█████╗  ██║     
+██║       ╚██╔╝  ██╔══██╗██╔══╝  ██╔══██╗╚════██║██╔══╝  ██║     
+╚██████╗   ██║   ██████╔╝███████╗██║  ██║███████║███████╗╚██████╗
+ ╚═════╝   ╚═╝   ╚═════╝ ╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝ ╚═════╝
+                </div>
+                <p class="typing-text">$ whoami</p>
+                <p>> <span class="glitch">SHYAM NATARAJAN</span></p>
+                <p>> Cybersecurity Specialist | Ethical Hacker | Security Analyst</p>
+                <p>> Location: Dublin, Ireland</p>
+                <p>> Status: <span style="color: var(--primary);">ACTIVE</span></p>
+                <p class="cursor">> Initializing portfolio...</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <h2>ABOUT ME</h2>
+        <div class="card">
+            <p>Masters in Cybersecurity graduate with hands-on experience in virtual analyst roles at MasterCard and JPMorgan Chase. Demonstrated expertise in identifying and mitigating phishing threats, analysing large datasets using Python and machine learning models, and enhancing cybersecurity training frameworks.</p>
+            <br>
+            <p>Proven ability to increase threat detection accuracy and reduce false negatives. Skilled in Python, C++, Windows, Docker, information security, and network and data security. Aiming to leverage these skills to contribute to advanced cybersecurity solutions.</p>
+        </div>
+    </section>
+
+    <section id="education">
+        <h2>EDUCATION</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="card">
+                    <h3>Master of Science: Cybersecurity</h3>
+                    <p style="color: var(--secondary);">National College of Ireland | Dublin, Ireland | Jan 2025</p>
+                    <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                        <li>Graduated with Second Class Honours</li>
+                        <li>Specialized in advanced threat detection and security frameworks</li>
+                        <li>Completed virtual analyst programs with MasterCard and JPMorgan Chase</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="card">
+                    <h3>Bachelor of Engineering: Computer Science and Engineering</h3>
+                    <p style="color: var(--secondary);">Sri Krishna College of Engineering and Technology | Coimbatore, India | Apr 2023</p>
+                    <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                        <li>Graduated with First Class - GPA: 8.87 CGPA</li>
+                        <li>Strong foundation in programming, algorithms, and system architecture</li>
+                        <li>Developed initial cybersecurity projects and participated in hackathons</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <h2>PROJECTS</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>🦈 SharkFinder</h3>
+                <p>Python-based subdomain enumeration tool for cybersecurity reconnaissance. Achieved 25% faster reconnaissance cycles and ~30% fewer false positives.</p>
+                <div style="margin-top: 1rem;">
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">DNS</span>
+                    <span class="skill-tag">Bug Bounty</span>
+                </div>
+                <a href="https://github.com/shyamn31/shark-Finder-Subdomain-enumeration-tool-" target="_blank" class="github-link">
+                    <span>🔗 View on GitHub</span>
+                </a>
+            </div>
+            <div class="card">
+                <h3>🛡️ Enterprise SIEM Solution</h3>
+                <p>Developed enterprise-level SIEM from scratch using open-source technologies. Achieved 40% improvement in alert triage time.</p>
+                <div style="margin-top: 1rem;">
+                    <span class="skill-tag">SIEM</span>
+                    <span class="skill-tag">Log Analysis</span>
+                    <span class="skill-tag">Threat Detection</span>
+                </div>
+                <a href="https://github.com/shyamn31/corporate-SIEM-project" target="_blank" class="github-link">
+                    <span>🔗 View on GitHub</span>
+                </a>
+            </div>
+            <div class="card">
+                <h3>☁️ Secure WordPress Infrastructure</h3>
+                <p>Architected secure WordPress on AWS with defense-in-depth controls. Achieved 92% CIS benchmark compliance score.</p>
+                <div style="margin-top: 1rem;">
+                    <span class="skill-tag">AWS</span>
+                    <span class="skill-tag">WAF</span>
+                    <span class="skill-tag">IAM</span>
+                </div>
+                <a href="https://github.com/shyamn31/project" target="_blank" class="github-link">
+                    <span>🔗 View on GitHub</span>
+                </a>
+            </div>
+            <div class="card">
+                <h3>🔐 Malware Analysis</h3>
+                <p>Comprehensive analysis of Ryuk ransomware and Lemon Duck botnet. Reduced sandbox evasion issues by ~35%.</p>
+                <div style="margin-top: 1rem;">
+                    <span class="skill-tag">Reverse Engineering</span>
+                    <span class="skill-tag">Malware Analysis</span>
+                    <span class="skill-tag">Sandboxing</span>
+                </div>
+            </div>
+            <div class="card">
+                <h3>🎯 JPMorgan Forage Internship</h3>
+                <p>Completed virtual cybersecurity analyst program focusing on phishing detection and threat analysis using ML models.</p>
+                <div style="margin-top: 1rem;">
+                    <span class="skill-tag">Machine Learning</span>
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">Threat Detection</span>
+                </div>
+                <a href="https://github.com/shyamn31/JP-morgan-forage-internship" target="_blank" class="github-link">
+                    <span>🔗 View on GitHub</span>
+                </a>
+            </div>
+            <div class="card">
+                <h3>🛒 Chattra-vishwakarma E-commerce</h3>
+                <p>Collaborative hackathon project - E-commerce web app for SMEs. Shortlisted in top 10 submissions at Chattravishwa Karma 2019.</p>
+                <div style="margin-top: 1rem;">
+                    <span class="skill-tag">Web Development</span>
+                    <span class="skill-tag">Java</span>
+                    <span class="skill-tag">MIT License</span>
+                </div>
+                <a href="https://github.com/shyamn31/Chattra-vishwakarma-hackathon-2019-ecommerce-website" target="_blank" class="github-link">
+                    <span>🔗 View on GitHub</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills">
+        <h2>TECHNICAL ARSENAL</h2>
+        <div class="card">
+            <h3>Programming & Tools</h3>
+            <div style="margin-top: 1rem;">
+                <span class="skill-tag">Python</span>
+                <span class="skill-tag">C++</span>
+                <span class="skill-tag">Windows</span>
+                <span class="skill-tag">Docker</span>
+                <span class="skill-tag">Information Security</span>
+                <span class="skill-tag">Network Security</span>
+                <span class="skill-tag">Data Security</span>
+                <span class="skill-tag">Machine Learning</span>
+                <span class="skill-tag">SIEM</span>
+                <span class="skill-tag">AWS</span>
+                <span class="skill-tag">Reverse Engineering</span>
+                <span class="skill-tag">Penetration Testing</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2>ESTABLISH CONNECTION</h2>
+        <div class="contact-info">
+            <a href="mailto:Shyamnatarajan4@gmail.com" class="contact-item">
+                <span>📧</span>
+                <span>Shyamnatarajan4@gmail.com</span>
+            </a>
+            <a href="tel:+353874788666" class="contact-item">
+                <span>📱</span>
+                <span>+353 874788666</span>
+            </a>
+            <a href="https://www.linkedin.com/in/shyam-natarajan-0189851a3/" class="contact-item" target="_blank">
+                <span>💼</span>
+                <span>LinkedIn</span>
+            </a>
+            <a href="https://github.com/shyamn31" class="contact-item" target="_blank">
+                <span>💻</span>
+                <span>GitHub</span>
+            </a>
+            <div class="contact-item">
+                <span>📍</span>
+                <span>Dublin, Ireland</span>
+            </div>
+        </div>
+        <div class="ascii-art" style="margin-top: 3rem;">
+[SYSTEM] Connection established...
+[SYSTEM] Secure channel opened...
+[SYSTEM] Ready for communication...
+        </div>
+    </section>
+
+    <script>
+        // Matrix Rain Effect
+        const canvas = document.getElementById('matrix-bg');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const matrix = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%+-/~{[|`]}';
+        const matrixArray = matrix.split('');
+
+        const fontSize = 10;
+        const columns = canvas.width / fontSize;
+
+        const drops = [];
+        for (let x = 0; x < columns; x++) {
+            drops[x] = 1;
+        }
+
+        function draw() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#00ff00';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = matrixArray[Math.floor(Math.random() * matrixArray.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(draw, 35);
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Resize handler
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Terminal typing effect
+        setTimeout(() => {
+            const cursor = document.querySelector('.cursor');
+            if (cursor) {
+                cursor.innerHTML = '> System initialized. <span class="loading"></span>';
+                setTimeout(() => {
+                    cursor.innerHTML = '> Ready for incoming connections...';
+                }, 2000);
+            }
+        }, 3000);
+    </script>
+</body>
+</html>
